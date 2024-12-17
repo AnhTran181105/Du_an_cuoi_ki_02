@@ -43,6 +43,7 @@
             this.Player3 = new System.Windows.Forms.PictureBox();
             this.Player2 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.BXH = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Player1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Player3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Player2)).BeginInit();
@@ -191,12 +192,26 @@
             this.label3.Text = "Score: ";
             this.label3.Visible = false;
             // 
+            // BXH
+            // 
+            this.BXH.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BXH.Location = new System.Drawing.Point(192, 266);
+            this.BXH.Margin = new System.Windows.Forms.Padding(4);
+            this.BXH.Name = "BXH";
+            this.BXH.Size = new System.Drawing.Size(221, 48);
+            this.BXH.TabIndex = 11;
+            this.BXH.Text = "Bảng Xếp Hạng";
+            this.BXH.UseVisualStyleBackColor = true;
+            this.BXH.Visible = false;
+            this.BXH.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Gameplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGreen;
             this.ClientSize = new System.Drawing.Size(581, 453);
+            this.Controls.Add(this.BXH);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.LevelLabel);
             this.Controls.Add(this.message);
@@ -237,5 +252,6 @@
         private System.Windows.Forms.Label message;
         private System.Windows.Forms.Label LevelLabel;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button BXH;
     }
 }
