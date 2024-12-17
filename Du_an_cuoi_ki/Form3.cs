@@ -5,11 +5,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WMPLib;
 using System.IO;
+using Label = System.Windows.Forms.Label;
 
 namespace Du_an_cuoi_ki
 {
@@ -33,6 +35,7 @@ namespace Du_an_cuoi_ki
         Image Rac3 = Properties.Resources.rac3;
         private List<PictureBox> racList = new List<PictureBox>();
         private Random rnd = new Random();
+
         // Gioi han duoi
         Label bottomBorder = new Label();
         int level = 1; // Cấp độ hiện tại
@@ -45,21 +48,23 @@ namespace Du_an_cuoi_ki
             InitializeComponent();
             //Ten nguoi choi
             Ten_nguoi_choi = ten;
-            // Them am thanh
+     
+            // Setting 
+            Player2.Visible = false;
+            Player3.Visible = false;
             An_diem = new WindowsMediaPlayer();
             Tru_diem_nhe = new WindowsMediaPlayer();
             Tru_diem_nang = new WindowsMediaPlayer();
             Nhac_nen = new WindowsMediaPlayer();
             // Tao duong dan
-            An_diem.URL = "Sound\\Trừ điểm nhẹ.mp3";
-            Tru_diem_nhe.URL = "Sound\\Trừ điểm nhẹ.mp3";
-            Tru_diem_nang.URL = "Sound\\Trừ điểm nặng.mp3";
+            An_diem.URL = "An_diem.mp3";
+            Tru_diem_nhe.URL = "Trừ điểm nhẹ.mp3";
+            Tru_diem_nang.URL = "Trừ điểm nặng.wav";
             Nhac_nen.URL = "Sound\\Nhạc nền.mp3";
-            // Setting 
-            Nhac_nen.settings.setMode("", true);
-            Nhac_nen.settings.volume = 15;
-            Player2.Visible = false;
-            Player3.Visible = false;
+            Scorelabel.Text = $"Diem:{diem}";
+            Scorelabel.Visible = true;
+            label3.Text = ten;
+            label3.Visible = true;
             UpdateLevelDisplay();
             SpawnRac();
         }
@@ -272,50 +277,62 @@ namespace Du_an_cuoi_ki
             racList.Add(rac);
             this.Controls.Add(rac);
         }
-
-        public void Tang_diem()
-        {
-            if (diem == null) return;
-            diem = diem + 5;
-            if (diem > diem_max) diem_max = diem;
-            An_diem.controls.play();
-            An_diem.settings.volume = 20;
-            Scorelabel.Visible = true;
-            Scorelabel.Text = $"Score: {diem}";
-            if (diem-30 >= pointsToNextLevel)
-            {
-                level++; // Tăng cấp độ
-                pointsToNextLevel += 30; // Tăng ngưỡng điểm cho cấp độ tiếp theo
-                td_roi+=level; // Tăng tốc độ rơi rác
-                UpdateLevelDisplay(); // Cập nhật giao diện cấp độ
-            }
-
-        }
         private void UpdateLevelDisplay()
         {
             LevelLabel.Visible = true;
             LevelLabel.Text = $"Level: {level}";
         }
+
+        public void Tang_diem()
+        {
+            if (An_diem != null)
+            {
+                An_diem.controls.stop(); // Dừng âm thanh trước đó để tránh trùng lặp
+                An_diem.controls.play();
+                An_diem.settings.volume = 100;
+            }
+
+            diem += 5;
+            if (diem > diem_max) diem_max = diem;
+
+            Scorelabel.Visible = true;
+            Scorelabel.Text = $"Score: {diem}";
+
+            if (diem - 30 >= pointsToNextLevel)
+            {
+                level++;
+                pointsToNextLevel += 30;
+                td_roi += level;
+                UpdateLevelDisplay();
+            }
+        }
+
         public void Tru_nhe()
         {
-            diem = diem - 3;
-            
-            Tru_diem_nhe.controls.play();
-            Tru_diem_nhe.settings.volume = 50;
-            Scorelabel.Visible = true;
-            Scorelabel.Text = $"Score: {diem}";
+            if (Tru_diem_nhe != null)
+            {
+                Tru_diem_nhe.controls.stop();
+                Tru_diem_nhe.controls.play();
+                Tru_diem_nhe.settings.volume = 100;
+            }
 
+            diem -= 3;
+            Scorelabel.Text = $"Score: {diem}";
         }
+
         public void Tru_nang()
         {
-            diem = diem - 1;
+            if (Tru_diem_nang != null)
+            {
+                Tru_diem_nang.controls.stop();
+                Tru_diem_nang.controls.play();
+                Tru_diem_nang.settings.volume = 100;
+            }
 
-            Tru_diem_nang.controls.play();
-            Tru_diem_nang.settings.volume = 50;
-            Scorelabel.Visible = true;
+            diem -= 1;
             Scorelabel.Text = $"Score: {diem}";
-
         }
+
 
 
         private void RacDichuyen_Tick_1(object sender, EventArgs e)
@@ -332,6 +349,7 @@ namespace Du_an_cuoi_ki
                 // Kiểm tra nếu rác chạm đáy
                 if (rac.Top > bottomBorder.Height)
                 {
+                    Tru_nang();
                     this.Controls.Remove(rac); // Xóa khỏi giao diện
                     racList.Remove(rac);      // Xóa khỏi danh sách
                 }
@@ -382,6 +400,7 @@ namespace Du_an_cuoi_ki
             {
                 // Logic trừ điểm khi bắt sai loại rác
                 Tru_nhe();
+                
             }
 
             // Xóa rác sau khi va chạm

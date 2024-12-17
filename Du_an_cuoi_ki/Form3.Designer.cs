@@ -82,7 +82,7 @@
             // 
             this.exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit.Location = new System.Drawing.Point(192, 156);
-            this.exit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.exit.Margin = new System.Windows.Forms.Padding(4);
             this.exit.Name = "exit";
             this.exit.Size = new System.Drawing.Size(221, 47);
             this.exit.TabIndex = 4;
@@ -95,7 +95,7 @@
             // 
             this.REPLAY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.REPLAY.Location = new System.Drawing.Point(192, 210);
-            this.REPLAY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.REPLAY.Margin = new System.Windows.Forms.Padding(4);
             this.REPLAY.Name = "REPLAY";
             this.REPLAY.Size = new System.Drawing.Size(221, 48);
             this.REPLAY.TabIndex = 5;
