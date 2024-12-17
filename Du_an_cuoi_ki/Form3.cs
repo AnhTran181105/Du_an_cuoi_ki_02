@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using WMPLib;
 using System.IO;
 using Label = System.Windows.Forms.Label;
+using Du_an_cuoi_ki.Properties;
 
 namespace Du_an_cuoi_ki
 {
@@ -35,7 +36,7 @@ namespace Du_an_cuoi_ki
         Image Rac3 = Properties.Resources.rac3;
         private List<PictureBox> racList = new List<PictureBox>();
         private Random rnd = new Random();
-        string filePath = Path.Combine(Application.StartupPath, "ThanhTich.txt");
+        string filePath = "Resources\\ThanhTich.txt";
         // Gioi han duoi
         Label bottomBorder = new Label();
         int level = 1; // Cấp độ hiện tại
@@ -86,15 +87,18 @@ namespace Du_an_cuoi_ki
         }
         void Ghi_nhan(string file)
         {
-            for(int i = 0;i<bang_xep_hang.GetLength(0);i++)
+
+            List<string> lines = new List<string>();
+            for (int i = 0; i < bang_xep_hang.GetLength(0); i++)
             {
-                string[] row = new string[bang_xep_hang.GetLength(1)];
-                for (int j = 0; j < bang_xep_hang.GetLength(1); j++) // Số cột
+                if (!string.IsNullOrEmpty(bang_xep_hang[i, 0])) // Kiểm tra dữ liệu không rỗng
                 {
-                    row[j] = bang_xep_hang[i, j];
+                    lines.Add($"{bang_xep_hang[i, 0]},{bang_xep_hang[i, 1]}");
                 }
-                File.AppendAllText(file, string.Join(",", row) + "\n");
-            }    
+            }
+
+            // Ghi đè vào file
+            File.WriteAllLines(file, lines);
         }
 
         private void GameOver()
@@ -330,7 +334,7 @@ namespace Du_an_cuoi_ki
                 Tru_diem_nang.settings.volume = 100;
             }
 
-            diem -= 100;
+            diem -= 1;
             Scorelabel.Text = $"Score: {diem}";
         }
 
@@ -413,7 +417,7 @@ namespace Du_an_cuoi_ki
         private void Gameplay_Load(object sender, EventArgs e)
         {
             label3.Text = Ten_nguoi_choi;
-            Thanh_tich(filePath);
+            Thanh_tich("Resources\\ThanhTich.txt");
         }
 
         private void REPLAY_Click(object sender, EventArgs e)
